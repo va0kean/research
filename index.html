@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research - Исследование облачных сервисов</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            min-height: 100vh;
+        }
+
+        /* Навигация */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #1e3a8a;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            font-size: 1.2em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #1e3a8a;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Слайдер */
+        .slider-section {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        .slider-container {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: #f8fafc;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            text-align: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-icon {
+            font-size: 6em;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        }
+
+        .slide h2 {
+            font-size: 3em;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .slide p {
+            font-size: 1.3em;
+            color: #64748b;
+            max-width: 700px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .slide-link {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .slide-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(30, 58, 138, 0.4);
+        }
+
+        /* Градиенты для слайдов */
+        .slide:nth-child(1) { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
+        .slide:nth-child(2) { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
+        .slide:nth-child(3) { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+        .slide:nth-child(4) { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); }
+        .slide:nth-child(5) { background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); }
+        .slide:nth-child(6) { background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%); }
+        .slide:nth-child(7) { background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); }
+
+        .slider-controls {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 10;
+        }
+
+        .slider-btn {
+            background: rgba(30, 58, 138, 0.9);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 30px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .slider-btn:hover {
+            background: #1e3a8a;
+            transform: scale(1.1);
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 30px;
+            background: white;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot:hover {
+            background: #64748b;
+        }
+
+        .dot.active {
+            background: #1e3a8a;
+            transform: scale(1.3);
+        }
+
+        /* Футер */
+        footer {
+            background: rgba(30, 58, 138, 0.95);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: #dbeafe;
+            text-decoration: underline;
+        }
+
+        /* Адаптив */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .slider {
+                height: 500px;
+            }
+
+            .slide {
+                padding: 30px;
+            }
+
+            .slide h2 {
+                font-size: 2em;
+            }
+
+            .slide p {
+                font-size: 1.1em;
+            }
+
+            .slide-icon {
+                font-size: 4em;
+            }
+
+            .slider-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span>🔬</span> RESEARCH
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Главная</a></li>
+                <li><a href="about.html">Манифест</a></li>
+                <li><a href="video.html">Видео</a></li>
+                <li><a href="audio.html">Аудио</a></li>
+                <li><a href="image.html">Изображения</a></li>
+                <li><a href="doc.html">Документы</a></li>
+                <li><a href="file.html">Файлы</a></li>
+                <li><a href="result.html">Результаты</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Слайдер -->
+    <div class="slider-section">
+        <div class="slider-container">
+            <div class="slider">
+                <!-- Слайд 1: Видео -->
+                <div class="slide active">
+                    <div class="slide-icon">🎬</div>
+                    <h2>Тестирование видео</h2>
+                    <p>Сравнение облачных сервисов на предмет корректной работы видеоплеера. GitHub, Dropbox, Yandex Disk и другие.</p>
+                    <a href="video.html" class="slide-link">Перейти к тестам →</a>
+                </div>
+
+                <!-- Слайд 2: Аудио -->
+                <div class="slide">
+                    <div class="slide-icon">🎵</div>
+                    <h2>Тестирование аудио</h2>
+                    <p>Проверка работы аудиоплееров на различных облачных платформах. SoundCloud, Spotify, Cloudinary и другие.</p>
+                    <a href="audio.html" class="slide-link">Перейти к тестам →</a>
+                </div>
+
+                <!-- Слайд 3: Изображения -->
+                <div class="slide">
+                    <div class="slide-icon">🖼️</div>
+                    <h2>Тестирование изображений</h2>
+                    <p>Анализ корректности отображения изображений из разных облачных хранилищ. Скорость загрузки и качество.</p>
+                    <a href="image.html" class="slide-link">Перейти к тестам →</a>
+                </div>
+
+                <!-- Слайд 4: Документы -->
+                <div class="slide">
+                    <div class="slide-icon">📄</div>
+                    <h2>Тестирование документов</h2>
+                    <p>Проверка отображения различных форматов документов: PDF, DOCX, презентации и таблицы.</p>
+                    <a href="doc.html" class="slide-link">Перейти к тестам →</a>
+                </div>
+
+                <!-- Слайд 5: Файлы -->
+                <div class="slide">
+                    <div class="slide-icon">📦</div>
+                    <h2>Тестирование файлов</h2>
+                    <p>Анализ возможности встраивания и скачивания различных типов файлов из облачных сервисов.</p>
+                    <a href="file.html" class="slide-link">Перейти к тестам →</a>
+                </div>
+
+                <!-- Слайд 6: Манифест -->
+                <div class="slide">
+                    <div class="slide-icon">📖</div>
+                    <h2>Манифест проекта</h2>
+                    <p>Цели исследования, методология тестирования и принципы работы с облачными сервисами.</p>
+                    <a href="about.html" class="slide-link">Читать манифест →</a>
+                </div>
+
+                <!-- Слайд 7: Результаты -->
+                <div class="slide">
+                    <div class="slide-icon">📊</div>
+                    <h2>Результаты исследований</h2>
+                    <p>Краткие отчеты, сравнительные таблицы и выводы по работе облачных сервисов.</p>
+                    <a href="result.html" class="slide-link">Смотреть результаты →</a>
+                </div>
+
+                <!-- Управление -->
+                <div class="slider-controls">
+                    <button class="slider-btn" id="prevBtn">‹</button>
+                    <button class="slider-btn" id="nextBtn">›</button>
+                </div>
+            </div>
+
+            <!-- Точки -->
+            <div class="slider-dots" id="dotsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2026 Research Project. Исследование облачных сервисов.</p>
+        <p>Создано на <a href="https://pages.github.com" target="_blank">GitHub Pages</a> с использованием HTML, CSS и JavaScript</p>
+        <p>🔬 Обучение • Исследование • Развитие</p>
+    </footer>
+
+    <script>
+        // Слайдер
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('dotsContainer');
+        let currentSlide = 0;
+
+        // Создаем точки
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                dots[index].classList.remove('active');
+            });
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'ArrowRight') nextSlide();
+        });
+
+        // Автопрокрутка (опционально, закомментировано)
+        // setInterval(nextSlide, 5000);
+    </script>
+</body>
+</html>
