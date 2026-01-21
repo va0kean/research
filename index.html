@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research - Исследование облачных сервисов</title>
-    <link rel="stylesheet" href="css/style.css">
     <style>
         * {
             margin: 0;
@@ -50,10 +49,6 @@
             gap: 10px;
         }
 
-        .logo span {
-            font-size: 1.2em;
-        }
-
         .nav-links {
             display: flex;
             gap: 5px;
@@ -78,28 +73,29 @@
             transform: translateY(-2px);
         }
 
-        /* Слайдер */
-        .slider-section {
+        /* Слайдер галереи */
+        .gallery-section {
             max-width: 1400px;
             margin: 60px auto;
             padding: 0 30px;
         }
 
-        .slider-container {
+        .gallery-container {
             background: white;
             border-radius: 25px;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         }
 
-        .slider {
+        .gallery-slider {
             position: relative;
             width: 100%;
-            height: 600px;
-            background: #f8fafc;
+            height: 700px;
+            background: #000;
+            overflow: hidden;
         }
 
-        .slide {
+        .gallery-slide {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -109,66 +105,41 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 60px;
-            text-align: center;
         }
 
-        .slide.active {
+        .gallery-slide.active {
             opacity: 1;
         }
 
-        .slide-icon {
-            font-size: 6em;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        .gallery-slide img {
+            max-width: 100%;
+            max-height: 85%;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
-        .slide h2 {
-            font-size: 3em;
-            color: #1e3a8a;
-            margin-bottom: 20px;
-            font-weight: 700;
+        .gallery-slide:hover img {
+            transform: scale(1.05);
         }
 
-        .slide p {
-            font-size: 1.3em;
-            color: #64748b;
-            max-width: 700px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .slide-link {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1.1em;
-            transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+            padding: 20px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 500;
         }
-
-        .slide-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(30, 58, 138, 0.4);
-        }
-
-        /* Градиенты для слайдов */
-        .slide:nth-child(1) { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
-        .slide:nth-child(2) { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
-        .slide:nth-child(3) { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
-        .slide:nth-child(4) { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); }
-        .slide:nth-child(5) { background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); }
-        .slide:nth-child(6) { background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%); }
-        .slide:nth-child(7) { background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); }
 
         .slider-controls {
             position: absolute;
             width: 100%;
-            top: 50%;
+            top: 45%;
             transform: translateY(-50%);
             display: flex;
             justify-content: space-between;
@@ -177,7 +148,7 @@
         }
 
         .slider-btn {
-            background: rgba(30, 58, 138, 0.9);
+            background: rgba(30, 58, 138, 0.8);
             color: white;
             border: none;
             width: 60px;
@@ -187,7 +158,7 @@
             font-size: 30px;
             font-weight: bold;
             transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
 
         .slider-btn:hover {
@@ -195,30 +166,96 @@
             transform: scale(1.1);
         }
 
-        .slider-dots {
+        /* Миниатюры */
+        .thumbnails-container {
             display: flex;
-            justify-content: center;
-            gap: 12px;
-            padding: 30px;
-            background: white;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 20px;
+            background: #f8fafc;
+            scrollbar-width: thin;
+            scrollbar-color: #1e3a8a #e2e8f0;
         }
 
-        .dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #cbd5e1;
+        .thumbnails-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .thumbnails-container::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+
+        .thumbnails-container::-webkit-scrollbar-thumb {
+            background: #1e3a8a;
+            border-radius: 4px;
+        }
+
+        .thumbnail {
+            min-width: 120px;
+            height: 80px;
             cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+            opacity: 0.6;
+        }
+
+        .thumbnail:hover {
+            opacity: 0.9;
+            transform: translateY(-3px);
+        }
+
+        .thumbnail.active {
+            border-color: #1e3a8a;
+            opacity: 1;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Модальное окно для увеличения */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal img {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+            font-weight: 300;
             transition: all 0.3s;
         }
 
-        .dot:hover {
-            background: #64748b;
-        }
-
-        .dot.active {
-            background: #1e3a8a;
-            transform: scale(1.3);
+        .modal-close:hover {
+            color: #60a5fa;
+            transform: scale(1.2);
         }
 
         /* Футер */
@@ -257,30 +294,24 @@
                 justify-content: center;
             }
 
-            .slider {
+            .gallery-slider {
                 height: 500px;
             }
 
-            .slide {
-                padding: 30px;
-            }
-
-            .slide h2 {
-                font-size: 2em;
-            }
-
-            .slide p {
+            .slide-caption {
                 font-size: 1.1em;
-            }
-
-            .slide-icon {
-                font-size: 4em;
+                padding: 15px;
             }
 
             .slider-btn {
                 width: 50px;
                 height: 50px;
                 font-size: 24px;
+            }
+
+            .thumbnail {
+                min-width: 100px;
+                height: 70px;
             }
         }
     </style>
@@ -305,112 +336,122 @@
         </div>
     </nav>
 
-    <!-- Слайдер -->
-    <div class="slider-section">
-        <div class="slider-container">
-            <div class="slider">
-                <!-- Слайд 1: Видео -->
-                <div class="slide active">
-                    <div class="slide-icon">🎬</div>
-                    <h2>Тестирование видео</h2>
-                    <p>Сравнение облачных сервисов на предмет корректной работы видеоплеера. GitHub, Dropbox, Yandex Disk и другие.</p>
-                    <a href="video.html" class="slide-link">Перейти к тестам →</a>
-                </div>
-
-                <!-- Слайд 2: Аудио -->
-                <div class="slide">
-                    <div class="slide-icon">🎵</div>
-                    <h2>Тестирование аудио</h2>
-                    <p>Проверка работы аудиоплееров на различных облачных платформах. SoundCloud, Spotify, Cloudinary и другие.</p>
-                    <a href="audio.html" class="slide-link">Перейти к тестам →</a>
-                </div>
-
-                <!-- Слайд 3: Изображения -->
-                <div class="slide">
-                    <div class="slide-icon">🖼️</div>
-                    <h2>Тестирование изображений</h2>
-                    <p>Анализ корректности отображения изображений из разных облачных хранилищ. Скорость загрузки и качество.</p>
-                    <a href="image.html" class="slide-link">Перейти к тестам →</a>
-                </div>
-
-                <!-- Слайд 4: Документы -->
-                <div class="slide">
-                    <div class="slide-icon">📄</div>
-                    <h2>Тестирование документов</h2>
-                    <p>Проверка отображения различных форматов документов: PDF, DOCX, презентации и таблицы.</p>
-                    <a href="doc.html" class="slide-link">Перейти к тестам →</a>
-                </div>
-
-                <!-- Слайд 5: Файлы -->
-                <div class="slide">
-                    <div class="slide-icon">📦</div>
-                    <h2>Тестирование файлов</h2>
-                    <p>Анализ возможности встраивания и скачивания различных типов файлов из облачных сервисов.</p>
-                    <a href="file.html" class="slide-link">Перейти к тестам →</a>
-                </div>
-
-                <!-- Слайд 6: Манифест -->
-                <div class="slide">
-                    <div class="slide-icon">📖</div>
-                    <h2>Манифест проекта</h2>
-                    <p>Цели исследования, методология тестирования и принципы работы с облачными сервисами.</p>
-                    <a href="about.html" class="slide-link">Читать манифест →</a>
-                </div>
-
-                <!-- Слайд 7: Результаты -->
-                <div class="slide">
-                    <div class="slide-icon">📊</div>
-                    <h2>Результаты исследований</h2>
-                    <p>Краткие отчеты, сравнительные таблицы и выводы по работе облачных сервисов.</p>
-                    <a href="result.html" class="slide-link">Смотреть результаты →</a>
-                </div>
-
-                <!-- Управление -->
+    <!-- Галерея -->
+    <div class="gallery-section">
+        <div class="gallery-container">
+            <div class="gallery-slider" id="gallerySlider">
+                <!-- Слайды будут созданы через JavaScript -->
+                
                 <div class="slider-controls">
                     <button class="slider-btn" id="prevBtn">‹</button>
                     <button class="slider-btn" id="nextBtn">›</button>
                 </div>
             </div>
 
-            <!-- Точки -->
-            <div class="slider-dots" id="dotsContainer"></div>
+            <!-- Миниатюры -->
+            <div class="thumbnails-container" id="thumbnailsContainer"></div>
         </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="modal">
+        <span class="modal-close" id="modalClose">×</span>
+        <img id="modalImage" src="" alt="">
     </div>
 
     <!-- Футер -->
     <footer>
         <p>&copy; 2026 Research Project. Исследование облачных сервисов.</p>
-        <p>Создано на <a href="https://pages.github.com" target="_blank">GitHub Pages</a> с использованием HTML, CSS и JavaScript</p>
+        <p>Галерея художественных работ • Создано на <a href="https://pages.github.com" target="_blank">GitHub Pages</a></p>
         <p>🔬 Обучение • Исследование • Развитие</p>
     </footer>
 
     <script>
-        // Слайдер
-        const slides = document.querySelectorAll('.slide');
+        // Данные галереи
+        const galleryData = [
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-85.jpg', title: 'Предчувствие' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-84.jpg', title: 'Немного о фараонах' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-83.jpg', title: 'Возвращение' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-82.jpg', title: 'Недошедшим' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-81.jpg', title: 'Театр трагедий' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-80.jpg', title: 'Предгорье' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-79.jpg', title: 'Портрет звезды' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-78.jpg', title: 'Под двумя солнцами' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-77.jpg', title: 'Погост' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-76.jpg', title: 'GlazCom' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-75.jpg', title: 'На природе' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-74.jpg', title: 'Крылья' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-73.jpg', title: 'На взгляд хищника' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-72.jpg', title: 'Музицирование на фоне трагедии' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-71.jpg', title: 'Обелиск' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-70.jpg', title: 'Мадонна' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-69.jpg', title: 'Кораблекрушение' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-68.jpg', title: 'Жизнь под столом' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-67.jpg', title: 'День грядущий' },
+            { url: 'https://content.foto.my.mail.ru/bk/va0kean/pictures/h-66.jpg', title: 'Вселенские шахматы' }
+        ];
+
+        const slider = document.getElementById('gallerySlider');
+        const thumbnailsContainer = document.getElementById('thumbnailsContainer');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        const dotsContainer = document.getElementById('dotsContainer');
-        let currentSlide = 0;
+        const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.getElementById('modalClose');
 
-        // Создаем точки
-        slides.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToSlide(index));
-            dotsContainer.appendChild(dot);
+        let currentSlide = 0;
+        let autoplayInterval;
+        let isHovered = false;
+
+        // Создание слайдов
+        galleryData.forEach((item, index) => {
+            // Слайд
+            const slide = document.createElement('div');
+            slide.className = 'gallery-slide';
+            if (index === 0) slide.classList.add('active');
+            
+            const img = document.createElement('img');
+            img.src = item.url;
+            img.alt = item.title;
+            img.addEventListener('click', () => openModal(item.url));
+            
+            const caption = document.createElement('div');
+            caption.className = 'slide-caption';
+            caption.textContent = item.title;
+            
+            slide.appendChild(img);
+            slide.appendChild(caption);
+            slider.insertBefore(slide, slider.querySelector('.slider-controls'));
+
+            // Миниатюра
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'thumbnail';
+            if (index === 0) thumbnail.classList.add('active');
+            
+            const thumbImg = document.createElement('img');
+            thumbImg.src = item.url;
+            thumbImg.alt = item.title;
+            
+            thumbnail.appendChild(thumbImg);
+            thumbnail.addEventListener('click', () => goToSlide(index));
+            thumbnailsContainer.appendChild(thumbnail);
         });
 
-        const dots = document.querySelectorAll('.dot');
+        const slides = document.querySelectorAll('.gallery-slide');
+        const thumbnails = document.querySelectorAll('.thumbnail');
 
+        // Управление слайдером
         function updateSlider() {
             slides.forEach((slide, index) => {
                 slide.classList.remove('active');
-                dots[index].classList.remove('active');
+                thumbnails[index].classList.remove('active');
             });
             
             slides[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
+            thumbnails[currentSlide].classList.add('active');
+            
+            // Прокрутка миниатюр
+            thumbnails[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
 
         function nextSlide() {
@@ -428,16 +469,78 @@
             updateSlider();
         }
 
-        nextBtn.addEventListener('click', nextSlide);
-        prevBtn.addEventListener('click', prevSlide);
+        // Автопрокрутка
+        function startAutoplay() {
+            if (!isHovered) {
+                autoplayInterval = setInterval(nextSlide, 5000);
+            }
+        }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') prevSlide();
-            if (e.key === 'ArrowRight') nextSlide();
+        function stopAutoplay() {
+            clearInterval(autoplayInterval);
+        }
+
+        // События
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            stopAutoplay();
+            startAutoplay();
         });
 
-        // Автопрокрутка (опционально, закомментировано)
-        // setInterval(nextSlide, 5000);
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            stopAutoplay();
+            startAutoplay();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                stopAutoplay();
+                startAutoplay();
+            }
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+                stopAutoplay();
+                startAutoplay();
+            }
+        });
+
+        // Остановка автопрокрутки при наведении
+        slider.addEventListener('mouseenter', () => {
+            isHovered = true;
+            stopAutoplay();
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            isHovered = false;
+            startAutoplay();
+        });
+
+        // Модальное окно
+        function openModal(imageUrl) {
+            modal.classList.add('active');
+            modalImage.src = imageUrl;
+            stopAutoplay();
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            modalImage.src = '';
+            startAutoplay();
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Запуск автопрокрутки
+        startAutoplay();
     </script>
 </body>
 </html>
