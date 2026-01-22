@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Манифест - Research</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            min-height: 100vh;
+        }
+
+        /* Навигация */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #1e3a8a;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #1e3a8a;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Контент */
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        .message-box {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        .message-box h1 {
+            color: #1e3a8a;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .message-box p {
+            color: #475569;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        /* Игра */
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .game-header h2 {
+            color: #1e3a8a;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .score-display {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        #gameCanvas {
+            display: block;
+            margin: 0 auto;
+            border: 3px solid #1e3a8a;
+            border-radius: 12px;
+            background: linear-gradient(to bottom, #93c5fd 0%, #dbeafe 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .controls {
+            margin-top: 25px;
+            text-align: center;
+            color: #475569;
+            font-size: 1.1em;
+        }
+
+        .controls p {
+            margin-bottom: 10px;
+        }
+
+        .restart-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
+        }
+
+        /* Футер */
+        footer {
+            background: rgba(30, 58, 138, 0.95);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: #dbeafe;
+            text-decoration: underline;
+        }
+
+        /* Адаптив */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .message-box h1 {
+                font-size: 1.5em;
+            }
+
+            .game-container {
+                padding: 20px;
+            }
+
+            #gameCanvas {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span>🔬</span> RESEARCH
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="about.html" class="active">Манифест</a></li>
+                <li><a href="video.html">Видео</a></li>
+                <li><a href="audio.html">Аудио</a></li>
+                <li><a href="image.html">Изображения</a></li>
+                <li><a href="doc.html">Документы</a></li>
+                <li><a href="file.html">Файлы</a></li>
+                <li><a href="result.html">Результаты</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Контент -->
+    <div class="container">
+        <!-- Сообщение -->
+        <div class="message-box">
+            <h1>📖 Манифест проекта Research</h1>
+            <p>Здесь будет манифест. Пока я его пишу, можете сыграть в игру!</p>
+        </div>
+
+        <!-- Игра -->
+        <div class="game-container">
+            <div class="game-header">
+                <h2>🏃 Runner Game</h2>
+                <div class="game-info">
+                    <div class="score-display">Счёт: <span id="score">0</span></div>
+                    <div class="score-display">Рекорд: <span id="highScore">0</span></div>
+                </div>
+            </div>
+
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+            <div class="controls">
+                <p><strong>Управление:</strong></p>
+                <p>🖱️ Компьютер: <strong>Пробел</strong> или <strong>Стрелка вверх</strong></p>
+                <p>📱 Телефон: <strong>Тап по экрану</strong></p>
+                <button class="restart-btn" onclick="restartGame()">🔄 Начать заново</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2026 Research Project. Манифест проекта.</p>
+        <p>Игра создана для развлечения во время написания манифеста</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+        const highScoreDisplay = document.getElementById('highScore');
+
+        // Игровые переменные
+        let gameRunning = true;
+        let score = 0;
+        let highScore = localStorage.getItem('runnerHighScore') || 0;
+        highScoreDisplay.textContent = highScore;
+
+        // Игрок
+        const player = {
+            x: 100,
+            y: 300,
+            width: 40,
+            height: 50,
+            velocityY: 0,
+            jumping: false,
+            gravity: 0.6,
+            jumpPower: -12
+        };
+
+        // Препятствия
+        let obstacles = [];
+        let obstacleTimer = 0;
+        let gameSpeed = 5;
+
+        // Управление
+        let keys = {};
+
+        document.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+            if ((e.code === 'Space' || e.code === 'ArrowUp') && !player.jumping) {
+                player.velocityY = player.jumpPower;
+                player.jumping = true;
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keys[e.code] = false;
+        });
+
+        // Тап для мобильных
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (!player.jumping) {
+                player.velocityY = player.jumpPower;
+                player.jumping = true;
+            }
+        });
+
+        canvas.addEventListener('click', () => {
+            if (!player.jumping) {
+                player.velocityY = player.jumpPower;
+                player.jumping = true;
+            }
+        });
+
+        function createObstacle() {
+            const height = Math.random() > 0.5 ? 40 : 60;
+            obstacles.push({
+                x: canvas.width,
+                y: canvas.height - height - 50,
+                width: 30,
+                height: height,
+                scored: false
+            });
+        }
+
+        function updatePlayer() {
+            // Гравитация
+            player.velocityY += player.gravity;
+            player.y += player.velocityY;
+
+            // Пол
+            const ground = canvas.height - player.height - 50;
+            if (player.y >= ground) {
+                player.y = ground;
+                player.velocityY = 0;
+                player.jumping = false;
+            }
+
+            // Потолок
+            if (player.y < 0) {
+                player.y = 0;
+                player.velocityY = 0;
+            }
+        }
+
+        function updateObstacles() {
+            obstacleTimer++;
+            if (obstacleTimer > 100 - (score * 0.5)) {
+                createObstacle();
+                obstacleTimer = 0;
+            }
+
+            obstacles.forEach((obs, index) => {
+                obs.x -= gameSpeed;
+
+                // Удаление вышедших за экран
+                if (obs.x + obs.width < 0) {
+                    obstacles.splice(index, 1);
+                }
+
+                // Подсчёт очков
+                if (!obs.scored && obs.x + obs.width < player.x) {
+                    score++;
+                    scoreDisplay.textContent = score;
+                    obs.scored = true;
+                    
+                    // Увеличение скорости
+                    if (score % 10 === 0) {
+                        gameSpeed += 0.5;
+                    }
+                }
+            });
+        }
+
+        function checkCollision() {
+            for (let obs of obstacles) {
+                if (player.x < obs.x + obs.width &&
+                    player.x + player.width > obs.x &&
+                    player.y < obs.y + obs.height &&
+                    player.y + player.height > obs.y) {
+                    gameOver();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function drawPlayer() {
+            // Тело
+            ctx.fillStyle = '#1e3a8a';
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            
+            // Голова
+            ctx.fillStyle = '#3b82f6';
+            ctx.beginPath();
+            ctx.arc(player.x + player.width/2, player.y - 10, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Глаза
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(player.x + player.width/2 - 5, player.y - 12, 4, 0, Math.PI * 2);
+            ctx.arc(player.x + player.width/2 + 5, player.y - 12, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(player.x + player.width/2 - 5, player.y - 12, 2, 0, Math.PI * 2);
+            ctx.arc(player.x + player.width/2 + 5, player.y - 12, 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawObstacles() {
+            obstacles.forEach(obs => {
+                ctx.fillStyle = '#dc2626';
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                
+                // Тень
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.fillRect(obs.x + 5, obs.y + obs.height, obs.width, 3);
+            });
+        }
+
+        function drawGround() {
+            ctx.fillStyle = '#10b981';
+            ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+            
+            // Трава
+            ctx.fillStyle = '#059669';
+            for (let i = 0; i < canvas.width; i += 20) {
+                ctx.fillRect(i, canvas.height - 50, 2, 10);
+            }
+        }
+
+        function drawClouds() {
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            const cloudOffset = (Date.now() / 50) % canvas.width;
+            
+            ctx.beginPath();
+            ctx.arc(200 - cloudOffset, 80, 20, 0, Math.PI * 2);
+            ctx.arc(220 - cloudOffset, 80, 25, 0, Math.PI * 2);
+            ctx.arc(240 - cloudOffset, 80, 20, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(500 - cloudOffset/2, 120, 15, 0, Math.PI * 2);
+            ctx.arc(515 - cloudOffset/2, 120, 20, 0, Math.PI * 2);
+            ctx.arc(530 - cloudOffset/2, 120, 15, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('runnerHighScore', highScore);
+                highScoreDisplay.textContent = highScore;
+            }
+            
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2 - 40);
+            
+            ctx.font = '24px Arial';
+            ctx.fillText(`Счёт: ${score}`, canvas.width/2, canvas.height/2 + 10);
+            ctx.fillText(`Рекорд: ${highScore}`, canvas.width/2, canvas.height/2 + 45);
+            
+            ctx.font = '18px Arial';
+            ctx.fillText('Нажмите "Начать заново"', canvas.width/2, canvas.height/2 + 90);
+        }
+
+        function restartGame() {
+            gameRunning = true;
+            score = 0;
+            scoreDisplay.textContent = score;
+            obstacles = [];
+            obstacleTimer = 0;
+            gameSpeed = 5;
+            player.y = 300;
+            player.velocityY = 0;
+            player.jumping = false;
+        }
+
+        function gameLoop() {
+            if (gameRunning) {
+                // Очистка
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Рисование
+                drawClouds();
+                drawGround();
+                drawPlayer();
+                drawObstacles();
+                
+                // Обновление
+                updatePlayer();
+                updateObstacles();
+                checkCollision();
+            }
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Запуск игры
+        gameLoop();
+    </script>
+</body>
+</html>
