@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Документы - Research</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            min-height: 100vh;
+        }
+
+        /* Навигация */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #1e3a8a;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #1e3a8a;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Контент */
+        .container {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Документы блоки */
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+        }
+
+        .doc-block {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .doc-block:hover {
+            transform: translateY(-5px);
+        }
+
+        .doc-label {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .doc-icon {
+            font-size: 1.3em;
+        }
+
+        .doc-container {
+            width: 100%;
+            height: 600px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: #f8fafc;
+        }
+
+        .doc-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .doc-container embed {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Футер */
+        footer {
+            background: rgba(30, 58, 138, 0.95);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 100px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: #dbeafe;
+            text-decoration: underline;
+        }
+
+        /* Адаптив */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .doc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .doc-block {
+                padding: 20px;
+            }
+
+            .doc-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span>🔬</span> RESEARCH
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="about.html">Манифест</a></li>
+                <li><a href="video.html">Видео</a></li>
+                <li><a href="audio.html">Аудио</a></li>
+                <li><a href="image.html">Изображения</a></li>
+                <li><a href="doc.html" class="active">Документы</a></li>
+                <li><a href="file.html">Файлы</a></li>
+                <li><a href="result.html">Результаты</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Контент -->
+    <div class="container">
+        <h1>📄 Тестирование отображения документов</h1>
+
+        <div class="doc-grid">
+            <!-- Canva -->
+            <div class="doc-block">
+                <div class="doc-label">
+                    <span class="doc-icon">🎨</span>
+                    Canva - онлайн презентация
+                </div>
+                <div class="doc-container">
+                    <iframe src="https://www.canva.com/design/DAG56L-Vqhk/Gs2-iYDnk3LM5XCOluYeGw/view?embed" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- Google Drive - PDF -->
+            <div class="doc-block">
+                <div class="doc-label">
+                    <span class="doc-icon">📕</span>
+                    Google Диск - PDF
+                </div>
+                <div class="doc-container">
+                    <iframe src="https://drive.google.com/file/d/14-Zb6nzMvpHWKyjdYDynyof8WxVLrZ_U/preview"></iframe>
+                </div>
+            </div>
+
+            <!-- Google Drive - DOC -->
+            <div class="doc-block">
+                <div class="doc-label">
+                    <span class="doc-icon">📘</span>
+                    Google Диск - doc
+                </div>
+                <div class="doc-container">
+                    <iframe src="https://docs.google.com/document/d/16EEPVas3EHprnfytFJjTw1cg0491tucRX-KeK_D5TSQ/preview"></iframe>
+                </div>
+            </div>
+
+            <!-- Google Drive - TXT -->
+            <div class="doc-block">
+                <div class="doc-label">
+                    <span class="doc-icon">📝</span>
+                    Google Диск - txt
+                </div>
+                <div class="doc-container">
+                    <iframe src="https://docs.google.com/document/d/1wDqHZAdhm4zEE91eBnivQn6tyz9HELSZGi883MosWHo/preview"></iframe>
+                </div>
+            </div>
+
+            <!-- GitHub Pages - PDF -->
+            <div class="doc-block">
+                <div class="doc-label">
+                    <span class="doc-icon">🐙📕</span>
+                    GitHub Pages - PDF
+                </div>
+                <div class="doc-container">
+                    <iframe src="https://va0kean.github.io/my-first-website/docs/d_PDF.pdf"></iframe>
+                </div>
+            </div>
+
+            <!-- GitHub Pages - DOCX -->
+            <div class="doc-block">
+                <div class="doc-label">
+                    <span class="doc-icon">🐙📘</span>
+                    GitHub Pages - docx
+                </div>
+                <div class="doc-container">
+                    <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://va0kean.github.io/my-first-website/docs/d_word.docx"></iframe>
+                </div>
+            </div>
+
+            <!-- GitHub Pages - TXT -->
+            <div class="doc-block">
+                <div class="doc-label">
+                    <span class="doc-icon">🐙📝</span>
+                    GitHub Pages - txt
+                </div>
+                <div class="doc-container">
+                    <iframe src="https://va0kean.github.io/my-first-website/docs/d_txt.txt"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2026 Research Project. Тестирование документов.</p>
+        <p>Проверка корректности отображения различных форматов документов</p>
+    </footer>
+</body>
+</html>
