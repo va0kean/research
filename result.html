@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты - Research</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            min-height: 100vh;
+        }
+
+        /* Навигация */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #1e3a8a;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #1e3a8a;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Контент */
+        .container {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Фильтры */
+        .filters {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border: 2px solid #1e3a8a;
+            background: white;
+            color: #1e3a8a;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        /* Сводная таблица */
+        .summary-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .summary-section h2 {
+            color: #1e3a8a;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .summary-table thead {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-table th {
+            font-weight: 600;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .status-excellent {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-good {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-poor {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .stars {
+            color: #fbbf24;
+            font-size: 1.2em;
+        }
+
+        /* Карточки отчётов */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .report-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+
+        .report-category {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .report-content {
+            margin-bottom: 20px;
+        }
+
+        .report-content h4 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .report-content p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .report-pros,
+        .report-cons {
+            margin-bottom: 15px;
+        }
+
+        .report-pros h5,
+        .report-cons h5 {
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+
+        .report-pros h5 {
+            color: #16a34a;
+        }
+
+        .report-cons h5 {
+            color: #dc2626;
+        }
+
+        .report-pros ul,
+        .report-cons ul {
+            margin-left: 20px;
+            color: #475569;
+        }
+
+        .report-pros li,
+        .report-cons li {
+            margin-bottom: 5px;
+        }
+
+        /* Карта */
+        .map-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        .map-section h2 {
+            color: #1e3a8a;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Футер */
+        footer {
+            background: rgba(30, 58, 138, 0.95);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: #dbeafe;
+            text-decoration: underline;
+        }
+
+        /* Адаптив */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .summary-section,
+            .map-section {
+                padding: 25px;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span>🔬</span> RESEARCH
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="about.html">Манифест</a></li>
+                <li><a href="video.html">Видео</a></li>
+                <li><a href="audio.html">Аудио</a></li>
+                <li><a href="image.html">Изображения</a></li>
+                <li><a href="doc.html">Документы</a></li>
+                <li><a href="file.html">Файлы</a></li>
+                <li><a href="result.html" class="active">Результаты</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Контент -->
+    <div class="container">
+        <h1>📊 Результаты исследования</h1>
+
+        <!-- Фильтры -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterResults('all')">Все</button>
+            <button class="filter-btn" onclick="filterResults('video')">Видео</button>
+            <button class="filter-btn" onclick="filterResults('audio')">Аудио</button>
+            <button class="filter-btn" onclick="filterResults('image')">Изображения</button>
+            <button class="filter-btn" onclick="filterResults('doc')">Документы</button>
+            <button class="filter-btn" onclick="filterResults('file')">Файлы</button>
+        </div>
+
+        <!-- Сводная таблица -->
+        <div class="summary-section">
+            <h2>📋 Сводная таблица сервисов</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Сервис</th>
+                        <th>Тип</th>
+                        <th>Оценка</th>
+                        <th>Скорость</th>
+                        <th>Удобство</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>GitHub Pages</strong></td>
+                        <td>Видео/Аудио/Файлы</td>
+                        <td class="stars">★★★★★</td>
+                        <td><span class="status-badge status-excellent">Отлично</span></td>
+                        <td><span class="status-badge status-excellent">Легко</span></td>
+                        <td><span class="status-badge status-excellent">Работает</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google Drive</strong></td>
+                        <td>Все типы</td>
+                        <td class="stars">★★★★☆</td>
+                        <td><span class="status-badge status-good">Хорошо</span></td>
+                        <td><span class="status-badge status-good">Удобно</span></td>
+                        <td><span class="status-badge status-excellent">Работает</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Canva</strong></td>
+                        <td>Документы</td>
+                        <td class="stars">★★★★★</td>
+                        <td><span class="status-badge status-excellent">Отлично</span></td>
+                        <td><span class="status-badge status-excellent">Отлично</span></td>
+                        <td><span class="status-badge status-excellent">Работает</span></td>
+                    </tr>
+                    <!-- Добавьте сюда строки для других сервисов -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Карточки отчётов -->
+        <div class="reports-grid">
+            <!-- GitHub Pages -->
+            <div class="report-card" data-category="video audio file">
+                <div class="report-header">
+                    <div class="report-title">🐙 GitHub Pages</div>
+                    <div class="report-category">Универсальный</div>
+                </div>
+                <div class="report-content">
+                    <h4>Общая оценка: <span class="stars">★★★★★</span></h4>
+                    
+                    <div class="report-pros">
+                        <h5>✅ Преимущества:</h5>
+                        <ul>
+                            <li>Абсолютно бесплатно</li>
+                            <li>Быстрый CDN</li>
+                            <li>Прямые ссылки работают везде</li>
+                            <li>Легко обновлять через Git</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="report-cons">
+                        <h5>❌ Недостатки:</h5>
+                        <ul>
+                            <li>Лимит 100 MB на файл</li>
+                            <li>Требует базовые знания Git</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Вывод:</strong> Идеальное решение для небольших медиафайлов и статического контента.</p>
+                </div>
+            </div>
+
+            <!-- Google Drive -->
+            <div class="report-card" data-category="video audio image doc file">
+                <div class="report-header">
+                    <div class="report-title">☁️ Google Drive</div>
+                    <div class="report-category">Универсальный</div>
+                </div>
+                <div class="report-content">
+                    <h4>Общая оценка: <span class="stars">★★★★☆</span></h4>
+                    
+                    <div class="report-pros">
+                        <h5>✅ Преимущества:</h5>
+                        <ul>
+                            <li>15 GB бесплатно</li>
+                            <li>Все форматы файлов</li>
+                            <li>Встроенные превью</li>
+                            <li>Легко делиться ссылками</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="report-cons">
+                        <h5>❌ Недостатки:</h5>
+                        <ul>
+                            <li>Нужен Google аккаунт</li>
+                            <li>Iframe показывает интерфейс Drive</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Вывод:</strong> Отличный универсальный вариант для всех типов файлов.</p>
+                </div>
+            </div>
+
+            <!-- Canva -->
+            <div class="report-card" data-category="doc">
+                <div class="report-header">
+                    <div class="report-title">🎨 Canva</div>
+                    <div class="report-category">Презентации</div>
+                </div>
+                <div class="report-content">
+                    <h4>Общая оценка: <span class="stars">★★★★★</span></h4>
+                    
+                    <div class="report-pros">
+                        <h5>✅ Преимущества:</h5>
+                        <ul>
+                            <li>Красивые интерактивные презентации</li>
+                            <li>Встроенный редактор</li>
+                            <li>Идеально для визуального контента</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="report-cons">
+                        <h5>❌ Недостатки:</h5>
+                        <ul>
+                            <li>Только для дизайнерских документов</li>
+                            <li>Требует регистрацию</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Вывод:</strong> Лучший выбор для презентаций и дизайнерских документов.</p>
+                </div>
+            </div>
+
+            <!-- Шаблон для нового отчёта (закомментирован) -->
+            <!--
+            <div class="report-card" data-category="video">
+                <div class="report-header">
+                    <div class="report-title">Название сервиса</div>
+                    <div class="report-category">Категория</div>
+                </div>
+                <div class="report-content">
+                    <h4>Общая оценка: <span class="stars">★★★★☆</span></h4>
+                    
+                    <div class="report-pros">
+                        <h5>✅ Преимущества:</h5>
+                        <ul>
+                            <li>Преимущество 1</li>
+                            <li>Преимущество 2</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="report-cons">
+                        <h5>❌ Недостатки:</h5>
+                        <ul>
+                            <li>Недостаток 1</li>
+                            <li>Недостаток 2</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Вывод:</strong> Ваш вывод...</p>
+                </div>
+            </div>
+            -->
+        </div>
+
+        <!-- Карта -->
+        <div class="map-section">
+            <h2>📍 Локация тестирования</h2>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.3369869287793!2d76.88863631542777!3d43.23800227913746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDE0JzE2LjgiTiA3NsKwNTMnMjQuMCJF!5e0!3m2!1sru!2skz!4v1234567890123!5m2!1sru!2skz" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <p style="text-align: center; margin-top: 20px; color: #475569;">
+                Все тесты проводились из Алматы, Казахстан. Скорость и производительность могут отличаться в зависимости от вашей локации.
+            </p>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2026 Research Project. Результаты исследования облачных сервисов.</p>
+        <p>Все данные актуальны на январь 2026 года</p>
+    </footer>
+
+    <script>
+        function filterResults(category) {
+            const cards = document.querySelectorAll('.report-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Обновляем кнопки
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Фильтруем карточки
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const categories = card.dataset.category;
+                    if (categories && categories.includes(category)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
